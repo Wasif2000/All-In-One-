@@ -1,12 +1,14 @@
-import React from 'react';
-import Prop from './components/Prop'; 
+import React from 'react'
+import Prop from './components/Prop'
+import WeatherLahore from './components/WeatherLahore'
 
 const App = () => {
   return (
     <>
-      <Prop name="Wasif" />
+    {/* <Prop/> */}
+    <WeatherLahore/>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App
