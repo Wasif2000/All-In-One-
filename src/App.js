@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
+import Prop from './components/Prop'; 
 
 const App = () => {
   return (
     <>
-    wasif ali
+      <Prop name="Wasif" />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
