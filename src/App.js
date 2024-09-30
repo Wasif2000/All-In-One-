@@ -3,7 +3,9 @@ import React from 'react'
 const App = () => {
   return (
     <>
-    wasif ali
+    <div>
+      <h2 className='capitalize '>wasif ali</h2>
+    </div>
     </>
   )
 }
