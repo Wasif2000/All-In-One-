@@ -1,11 +1,10 @@
 import React from 'react'
+import WeatherApi from './components/WeatherApi'
 
 const App = () => {
   return (
     <>
-    <div>
-      <h2 className='capitalize '>wasif ali</h2>
-    </div>
+  <WeatherApi/>
     </>
   )
 }
