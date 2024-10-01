@@ -1,10 +1,11 @@
 import React from 'react'
-import WeatherApi from './components/WeatherApi'
+
+import Jswork from './components/Jswork'
 
 const App = () => {
   return (
     <>
-  <WeatherApi/>
+  <Jswork/>
     </>
   )
 }
