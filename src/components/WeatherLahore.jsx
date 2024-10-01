@@ -42,33 +42,63 @@ const WeatherLahore = () => {
     }
   };
 
+  const renderWeatherIcon = (condition) => {
+    switch (condition) {
+      case 'Clear':
+        return <i className="sun-icon">☀️</i>;
+      case 'Partly cloudy':
+        return <i className="cloud-sun-icon">🌤️</i>;
+      case 'Cloudy':
+        return <i className="cloud-icon">☁️</i>;
+      case 'Rain':
+        return <i className="rain-icon">🌧️</i>;
+      case 'Thunderstorm':
+        return <i className="storm-icon">⛈️</i>;
+      default:
+        return <i className="default-icon">🌦️</i>;
+    }
+  };
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-red-500">Error: {error}</div>;
   }
 
   return (
-    <div>
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 p-4">
       {/* Search bar to search for a city's weather */}
-      <form onSubmit={handleSearch}>
+      <form onSubmit={handleSearch} className="mb-4">
         <input
           type="text"
           value={searchCity}
           onChange={(e) => setSearchCity(e.target.value)}
           placeholder="Enter city name..."
+          className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
-        <button type="submit">Search</button>
+        <button
+          type="submit"
+          className="ml-2 p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
+        >
+          Search
+        </button>
       </form>
 
-      {/* Display weather details */}
-      <h1>Current Weather in {weather.location.name}, {weather.location.country}</h1>
-      <p>Temperature: {weather.current.temp_c}°C</p>
-      <p>Condition: {weather.current.condition.text}</p>
-      <p>Wind Speed: {weather.current.wind_kph} kph</p>
-      <p>Humidity: {weather.current.humidity}%</p>
+      {/* Weather card */}
+      <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full text-center">
+        <div className="flex justify-center text-6xl">
+          {renderWeatherIcon(weather.current.condition.text)}
+        </div>
+        <h1 className="text-2xl font-bold mt-4">
+          Current Weather in {weather.location.name}, {weather.location.country}
+        </h1>
+        <p className="text-lg mt-2">Temperature: {weather.current.temp_c}°C</p>
+        <p className="text-lg">Condition: {weather.current.condition.text}</p>
+        <p className="text-lg">Wind Speed: {weather.current.wind_kph} kph</p>
+        <p className="text-lg">Humidity: {weather.current.humidity}%</p>
+      </div>
     </div>
   );
 };
