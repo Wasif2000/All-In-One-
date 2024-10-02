@@ -1,16 +1,34 @@
 import { useEffect, useState } from 'react';
 
+// Function to render weather icons based on weather condition
+const renderWeatherIcon = (condition) => {
+  switch (condition) {
+    case 'Clear':
+      return '☀️';
+    case 'Partly cloudy':
+      return '🌤️';
+    case 'Cloudy':
+      return '☁️';
+    case 'Rain':
+      return '🌧️';
+    case 'Thunderstorm':
+      return '⛈️';
+    default:
+      return '🌦️';
+  }
+};
+
 const WeatherComparison = () => {
   const [weatherLahore, setWeatherLahore] = useState(null);
   const [weatherCity1, setWeatherCity1] = useState(null);
   const [weatherCity2, setWeatherCity2] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [city1, setCity1] = useState('');
-  const [city2, setCity2] = useState('');
+  const [searchCity1, setSearchCity1] = useState('');
+  const [searchCity2, setSearchCity2] = useState('');
 
   // Function to fetch weather data
-  const fetchWeather = async (location, setWeather) => {
+  const fetchWeather = async (location, setter) => {
     setLoading(true);
     setError(null);
     try {
@@ -21,7 +39,7 @@ const WeatherComparison = () => {
         throw new Error('Failed to fetch weather data');
       }
       const data = await response.json();
-      setWeather(data);
+      setter(data);
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -29,38 +47,26 @@ const WeatherComparison = () => {
     }
   };
 
-  // Fetch weather for Lahore by default
+  // Fetch Lahore weather by default
   useEffect(() => {
     fetchWeather('Lahore, Pakistan', setWeatherLahore);
   }, []);
 
-  // Handle search for city 1 and city 2
-  const handleFetchCity1 = () => {
-    if (city1) {
-      fetchWeather(city1, setWeatherCity1);
+  // Handle search for City 1
+  const handleSearchCity1 = (e) => {
+    e.preventDefault();
+    if (searchCity1) {
+      fetchWeather(searchCity1, setWeatherCity1);
+      setSearchCity1(''); // Clear search bar
     }
   };
 
-  const handleFetchCity2 = () => {
-    if (city2) {
-      fetchWeather(city2, setWeatherCity2);
-    }
-  };
-
-  const renderWeatherIcon = (condition) => {
-    switch (condition) {
-      case 'Clear':
-        return <i className="sun-icon">☀️</i>;
-      case 'Partly cloudy':
-        return <i className="cloud-sun-icon">🌤️</i>;
-      case 'Cloudy':
-        return <i className="cloud-icon">☁️</i>;
-      case 'Rain':
-        return <i className="rain-icon">🌧️</i>;
-      case 'Thunderstorm':
-        return <i className="storm-icon">⛈️</i>;
-      default:
-        return <i className="default-icon">🌦️</i>;
+  // Handle search for City 2
+  const handleSearchCity2 = (e) => {
+    e.preventDefault();
+    if (searchCity2) {
+      fetchWeather(searchCity2, setWeatherCity2);
+      setSearchCity2(''); // Clear search bar
     }
   };
 
@@ -73,92 +79,70 @@ const WeatherComparison = () => {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 p-4">
-      {/* Input fields for two cities */}
-      <div className="flex mb-4">
-        <input
-          type="text"
-          value={city1}
-          onChange={(e) => setCity1(e.target.value)}
-          placeholder="Enter first city..."
-          className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 mr-2"
-        />
-        <button
-          onClick={handleFetchCity1}
-          className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
-        >
-          Compare City 1
-        </button>
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-indigo-400 to-blue-500 pt-28">
+      {/* Title */}
+      <h1 className="text-4xl text-white font-bold mb-8">Weather Comparison</h1>
+
+      {/* Search bars */}
+      <div className="flex space-x-4 mb-8">
+        <form onSubmit={handleSearchCity1} className="relative flex w-full max-w-sm">
+          <input
+            type="text"
+            value={searchCity1}
+            onChange={(e) => setSearchCity1(e.target.value)}
+            placeholder=" first city..."
+            className="flex-grow p-3 rounded-lg shadow-md focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="absolute right-0 top-0 h-full px-4 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 focus:outline-none"
+          >
+            Search
+          </button>
+        </form>
+
+        <form onSubmit={handleSearchCity2} className="relative flex w-full max-w-sm">
+          <input
+            type="text"
+            value={searchCity2}
+            onChange={(e) => setSearchCity2(e.target.value)}
+            placeholder="Second city..."
+            className="flex-grow p-3 rounded-lg shadow-md focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="absolute right-0 top-0 h-full px-4 bg-blue-600 text-white rounded-r-lg hover:bg-blue-700 focus:outline-none"
+          >
+            Search
+          </button>
+        </form>
       </div>
 
-      <div className="flex mb-4">
-        <input
-          type="text"
-          value={city2}
-          onChange={(e) => setCity2(e.target.value)}
-          placeholder="Enter second city..."
-          className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 mr-2"
-        />
-        <button
-          onClick={handleFetchCity2}
-          className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none"
-        >
-          Compare City 2
-        </button>
-      </div>
-
-      {/* Weather cards for Lahore and the two cities */}
-      <div className="flex justify-between w-full max-w-lg space-x-4">
-        {/* Lahore Weather Card */}
+      {/* Weather cards in a row */}
+      <div className="flex flex-row space-x-6">
         {weatherLahore && (
-          <div className="bg-white rounded-lg shadow-lg p-6 text-center w-full">
-            <div className="flex justify-center text-6xl">
-              {renderWeatherIcon(weatherLahore.current.condition.text)}
-            </div>
-            <h1 className="text-2xl font-bold mt-4">
-              Current Weather in {weatherLahore.location.name}, {weatherLahore.location.country}
-            </h1>
-            <p className="text-lg mt-2">Temperature: {weatherLahore.current.temp_c}°C</p>
-            <p className="text-lg">Condition: {weatherLahore.current.condition.text}</p>
-            <p className="text-lg">Wind Speed: {weatherLahore.current.wind_kph} kph</p>
-            <p className="text-lg">Humidity: {weatherLahore.current.humidity}%</p>
-          </div>
+          <WeatherCard weather={weatherLahore} title="Current Weather in Lahore, Pakistan" />
         )}
-
-        {/* City 1 Weather Card */}
         {weatherCity1 && (
-          <div className="bg-white rounded-lg shadow-lg p-6 text-center w-full">
-            <div className="flex justify-center text-6xl">
-              {renderWeatherIcon(weatherCity1.current.condition.text)}
-            </div>
-            <h1 className="text-2xl font-bold mt-4">
-              Current Weather in {weatherCity1.location.name}, {weatherCity1.location.country}
-            </h1>
-            <p className="text-lg mt-2">Temperature: {weatherCity1.current.temp_c}°C</p>
-            <p className="text-lg">Condition: {weatherCity1.current.condition.text}</p>
-            <p className="text-lg">Wind Speed: {weatherCity1.current.wind_kph} kph</p>
-            <p className="text-lg">Humidity: {weatherCity1.current.humidity}%</p>
-          </div>
+          <WeatherCard weather={weatherCity1} title={`Current Weather in ${weatherCity1.location.name}`} />
         )}
-
-        {/* City 2 Weather Card */}
         {weatherCity2 && (
-          <div className="bg-white rounded-lg shadow-lg p-6 text-center w-full">
-            <div className="flex justify-center text-6xl">
-              {renderWeatherIcon(weatherCity2.current.condition.text)}
-            </div>
-            <h1 className="text-2xl font-bold mt-4">
-              Current Weather in {weatherCity2.location.name}, {weatherCity2.location.country}
-            </h1>
-            <p className="text-lg mt-2">Temperature: {weatherCity2.current.temp_c}°C</p>
-            <p className="text-lg">Condition: {weatherCity2.current.condition.text}</p>
-            <p className="text-lg">Wind Speed: {weatherCity2.current.wind_kph} kph</p>
-            <p className="text-lg">Humidity: {weatherCity2.current.humidity}%</p>
-          </div>
+          <WeatherCard weather={weatherCity2} title={`Current Weather in ${weatherCity2.location.name}`} />
         )}
       </div>
     </div>
   );
 };
+
+const WeatherCard = ({ weather, title }) => (
+  <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full text-center transform transition-all hover:scale-105">
+    <div className="text-6xl mb-4">{renderWeatherIcon(weather.current.condition.text)}</div>
+    <h1 className="text-xl font-semibold">{title}</h1>
+    <p className="text-lg mt-2">Temperature: {weather.current.temp_c}°C</p>
+    <p className="text-lg">Condition: {weather.current.condition.text}</p>
+    <p className="text-lg">Wind Speed: {weather.current.wind_kph} kph</p>
+    <p className="text-lg">Humidity: {weather.current.humidity}%</p>
+  </div>
+);
 
 export default WeatherComparison;

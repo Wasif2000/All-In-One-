@@ -1,10 +1,10 @@
 import React from 'react'
-import WeatherApi from './components/WeatherApi'
+import WeatherLahore from './components/WeatherLahore'
 
 const App = () => {
   return (
     <>
-  <WeatherApi/>
+  <WeatherLahore/>
     </>
   )
 }
