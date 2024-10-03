@@ -9,17 +9,17 @@ const Weather = () => {
 
   const apiKey = '355a77fec62e422bba1103052242609'; // Your API Key
 
-  const getWeather = async () => {
-    try {
-      const response = await axios.get(
-        `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`
-      );
-      setWeather(response.data);
-      setError('');
-    } catch (err) {
-      setError('City not found');
-      setWeather(null);
-    }
+  const getWeather = () => {
+    axios
+      .get(`http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`)
+      .then((response) => {
+        setWeather(response.data);
+        setError('');
+      })
+      .catch(() => {
+        setError('City not found');
+        setWeather(null);
+      });
   };
 
   return (
@@ -45,11 +45,20 @@ const Weather = () => {
 
       {weather && (
         <div className="text-center">
-          <h2 className="text-xl font-semibold">{weather.location.name}</h2>
-          <p>{weather.location.country}</p>
+          <h2 className="text-xl font-semibold">{weather.location.name}, {weather.location.country}</h2>
           <p>Temperature: {weather.current.temp_c}°C</p>
           <p>Condition: {weather.current.condition.text}</p>
-          <img src={weather.current.condition.icon} alt="weather icon" />
+          <div className="mt-4">
+            <p><strong>Wind Speed:</strong> {weather.current.wind_kph} kph</p>
+            <p><strong>Humidity:</strong> {weather.current.humidity}%</p>
+            <p><strong>Visibility:</strong> {weather.current.vis_km} km</p>
+            <p><strong>Feels Like:</strong> {weather.current.feelslike_c}°C</p>
+            <p><strong>Cloud Cover:</strong> {weather.current.cloud}%</p>
+          </div>
+          <img src={weather.current.condition.icon} alt="weather icon" className="mx-auto" />
+
+          {/* New Weather Features */}
+          
         </div>
       )}
     </div>
