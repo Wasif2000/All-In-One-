@@ -1,10 +1,10 @@
 import React from 'react'
-import WeatherApi from './components/WeatherApi'
+import Axio from './components/Axio'
 
 const App = () => {
   return (
     <>
-  <WeatherApi/>
+  <Axio/>
     </>
   )
 }
