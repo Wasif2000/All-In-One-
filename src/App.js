@@ -1,10 +1,10 @@
 import React from 'react'
-import WeatherLahore from './components/WeatherLahore'
+import Main from './hooks/Use-Context/Main'
 
 const App = () => {
   return (
     <>
-  <WeatherLahore/>
+   <Main/>
     </>
   )
 }
