@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
 import Comp1 from './Comp1';
+import Compo2 from './Compo2';
 
 export const Mdn = createContext();
 
@@ -16,7 +17,7 @@ const Main = () => {
       <Mdn.Provider value={{ name, name2 }}>
         <h2>why are you late {name}</h2>
         <h6>where are you going {name3}</h6>
-        <Comp1 />
+        <Compo2 />
       </Mdn.Provider>
     </div>
   );
