@@ -1,12 +1,13 @@
-import React from 'react';
-import Main from "../src/hooks/Use-Context/Main"
-import MainA from './hooks/Use-Context/MainA';
+import React from 'react'
+import PracticeUserefe from './hooks/Use-Ref/PracticeUserefe'
+
+
 const App = () => {
   return (
     <>
-      <MainA/>
+  <PracticeUserefe/>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App
