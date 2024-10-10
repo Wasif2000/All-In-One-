@@ -1,11 +1,11 @@
 import React from 'react'
-import PracticeUserefe from './hooks/Use-Ref/PracticeUserefe'
-
+import DarkMode from './hooks/Use-State/DarkMode'
+import Counter from './hooks/Use-State/Counter'
 
 const App = () => {
   return (
     <>
-  <PracticeUserefe/>
+    <Counter/>
     </>
   )
 }
