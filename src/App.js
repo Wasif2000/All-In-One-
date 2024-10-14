@@ -1,13 +1,22 @@
-import React from 'react'
-import DarkMode from './hooks/Use-State/DarkMode'
-import Counter from './hooks/Use-State/Counter'
+import React from 'react';
+import Tictac from './components/Tictac';
 
 const App = () => {
   return (
-    <>
-    <Counter/>
-    </>
-  )
+    <div className='flex justify-center items-center h-screen'>
+      <div className='grid grid-cols-3'>
+        <Tictac />
+        <Tictac />
+        <Tictac />
+        <Tictac />
+        <Tictac />
+        <Tictac />
+        <Tictac />
+        <Tictac />
+        <Tictac />
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
